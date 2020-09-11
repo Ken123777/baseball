@@ -1,6 +1,7 @@
 const inputNumber = document.querySelector('#input-number');
 const randomNumberArray = [];
 let count = 0;
+let gameOver = [false];
 
 //랜덤 세자리 숫자 만들기
 function makeRandomNumber() {
@@ -60,7 +61,7 @@ inputNumber.addEventListener('keyup', function(event) {
             function showResult() {//화면에 사용자 입력숫자와 결과 보여주기
                 const userValue = document.querySelector('.user-value');
                 const result = document.querySelector('.result');
-                result.innerHTML += '<div>' + strike + ' strike' + ball + ' ball ' + '</div>';
+                result.innerHTML += '<div>' + strike + ' strike ' + ball + ' ball ' + '</div>';
                 userValue.innerHTML += '<div>' + inputNumberArray.join('');
             }
 
@@ -68,15 +69,25 @@ inputNumber.addEventListener('keyup', function(event) {
            
             count++;
 
-            if(strike === 3) {
-                alert('성공! ' + count + '번 만에 성공하셨습니다');
-            } else if(count === 10) {
-                alert('실패! 정답은 ' + randomNumberArray.join('') + '입니다');
-                blank();
-            } else if(count > 10) {
-                alert('새로운 게임을 시작하세요!');
+            if(gameOver[0] === false) {
+                if(count > 10) {
+                    alert('새로운 게임을 시작하세요!');
+                    blank();
+                } else if(count === 10) {
+                    alert('실패! 정답은 ' + randomNumberArray.join('') + '입니다');
+                    showResult();
+                    blank();
+                } else if(strike === 3) {
+                    alert('성공! ' + count + '번 만에 성공하셨습니다');
+                    showResult();
+                    blank();
+                    gameOver[0] = true;
+                } else {
+                    showResult();
+                    blank();
+                }
             } else {
-                showResult();
+                alert('새로운 게임을 시작하세요!');
                 blank();
             }
         }
